@@ -17,18 +17,24 @@
 static rt_err_t ld3320_spi_send(struct rt_spi_device *device, uint8_t *send_buf1, uint8_t *send_buf2, uint8_t *send_buf3)
 {
     rt_err_t result;
+
     struct rt_spi_message message;
 
     RT_ASSERT(device != RT_NULL);
     RT_ASSERT(device->bus != RT_NULL);
 
     result = rt_mutex_take(&(device->bus->lock), RT_WAITING_FOREVER);
-    if (result == RT_EOK) {
-        if (device->bus->owner != device) {
+    if (result == RT_EOK)
+    {
+        if (device->bus->owner != device)
+        {
             result = device->bus->ops->configure(device, &device->config);
-            if (result == RT_EOK) {
+            if (result == RT_EOK)
+            {
                 device->bus->owner = device;
-            } else {
+            }
+            else
+            {
                 result = -RT_EIO;
                 goto __exit;
             }
@@ -43,7 +49,8 @@ static rt_err_t ld3320_spi_send(struct rt_spi_device *device, uint8_t *send_buf1
         message.next = RT_NULL;
 
         result = device->bus->ops->xfer(device, &message);
-        if (result == 0) {
+        if (result == 0)
+        {
             result = -RT_EIO;
             goto __exit;
         }
@@ -57,7 +64,8 @@ static rt_err_t ld3320_spi_send(struct rt_spi_device *device, uint8_t *send_buf1
         message.next = RT_NULL;
 
         result = device->bus->ops->xfer(device, &message);
-        if (result == 0) {
+        if (result == 0)
+        {
             result = -RT_EIO;
             goto __exit;
         }
@@ -71,13 +79,16 @@ static rt_err_t ld3320_spi_send(struct rt_spi_device *device, uint8_t *send_buf1
         message.next = RT_NULL;
 
         result = device->bus->ops->xfer(device, &message);
-        if (result == 0) {
+        if (result == 0)
+        {
             result = -RT_EIO;
             goto __exit;
         }
 
         result = RT_EOK;
-    } else {
+    }
+    else
+    {
         return -RT_EIO;
     }
 
@@ -95,12 +106,17 @@ static rt_err_t ld3320_spi_recv(struct rt_spi_device *device, uint8_t *send_buf1
     RT_ASSERT(device->bus != RT_NULL);
 
     result = rt_mutex_take(&(device->bus->lock), RT_WAITING_FOREVER);
-    if (result == RT_EOK) {
-        if (device->bus->owner != device) {
+    if (result == RT_EOK)
+    {
+        if (device->bus->owner != device)
+        {
             result = device->bus->ops->configure(device, &device->config);
-            if (result == RT_EOK) {
+            if (result == RT_EOK)
+            {
                 device->bus->owner = device;
-            } else {
+            }
+            else
+            {
                 result = -RT_EIO;
                 goto __exit;
             }
@@ -115,7 +131,8 @@ static rt_err_t ld3320_spi_recv(struct rt_spi_device *device, uint8_t *send_buf1
         message.next = RT_NULL;
 
         result = device->bus->ops->xfer(device, &message);
-        if (result == 0) {
+        if (result == 0)
+        {
             result = -RT_EIO;
             goto __exit;
         }
@@ -129,7 +146,8 @@ static rt_err_t ld3320_spi_recv(struct rt_spi_device *device, uint8_t *send_buf1
         message.next = RT_NULL;
 
         result = device->bus->ops->xfer(device, &message);
-        if (result == 0) {
+        if (result == 0)
+        {
             result = -RT_EIO;
             goto __exit;
         }
@@ -143,13 +161,16 @@ static rt_err_t ld3320_spi_recv(struct rt_spi_device *device, uint8_t *send_buf1
         message.next = RT_NULL;
 
         result = device->bus->ops->xfer(device, &message);
-        if (result == 0) {
+        if (result == 0)
+        {
             result = -RT_EIO;
             goto __exit;
         }
 
         result = RT_EOK;
-    } else {
+    }
+    else
+    {
         return -RT_EIO;
     }
 
