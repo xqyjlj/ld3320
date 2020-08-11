@@ -7,8 +7,8 @@
  * Date           Author       Notes
  * 2020-08-03     xqyjlj       the first version
  */
-#ifndef MY_PACKAGES_LD3320_H_
-#define MY_PACKAGES_LD3320_H_
+#ifndef __LD3320_H__
+#define __LD3320_H__
 
 #include <rtdevice.h>
 #include "ld3320_base.h"
@@ -50,13 +50,12 @@ struct ld3320_port
     int irq_pin;
     int rst_pin;
 };
-typedef struct ld3320_port ld3320_port_t;
 
 typedef void (*asr_over_callback_t)(uint8_t num);/* Callback function after ld3320 asr recognition */
 /* ld3320 device */
-struct ld3320_
+struct ld3320_obj
 {
-    ld3320_port_t port;
+    struct ld3320_port port;
     struct rt_spi_device *dev;
     void (*asr_over_callback_t)(uint8_t num); /*callback */
 #ifdef LD3320_USING_MP3
@@ -65,14 +64,14 @@ struct ld3320_
     uint32_t mp3_pos;
 #endif
 };
-typedef struct ld3320_ *ld3320_t;
+
 /* ld3320 list head */
-struct ld3320_head
+struct ld3320
 {
-    struct ld3320_      obj;
-    rt_list_t           node;
+    struct ld3320_obj obj;
+    rt_list_t node;
 };
-typedef struct ld3320_head *ld3320_head_t;
+typedef struct ld3320 *ld3320_t;
 /* ld3320 command node */
 struct ld3320_command
 {
@@ -83,19 +82,19 @@ struct ld3320_command
 typedef struct ld3320_command *ld3320_command_t;
 
 
-ld3320_head_t ld3320_create(char *spi_dev_name, int wr_pin, int rst_pin, int irq_pin, uint8_t mode);
-void ld3320_run(ld3320_head_t ld3320, uint8_t mode);
-void ld3320_hw_rst(ld3320_head_t ops);
+ld3320_t ld3320_create(char *spi_dev_name, int wr_pin, int rst_pin, int irq_pin, uint8_t mode);
+void ld3320_run(ld3320_t ld3320, uint8_t mode);
+void ld3320_hw_rst(ld3320_t ops);
 
-uint8_t ld3320_asr_start(ld3320_head_t ops);
-void ld3320_set_asr_over_callback(ld3320_head_t ops, asr_over_callback_t callback);
-void ld3320_addcommand_tolist(ld3320_head_t ops, char *pass, int num);
-void ld3320_addcommand_fromlist(ld3320_head_t ops);
+uint8_t ld3320_asr_start(ld3320_t ops);
+void ld3320_set_asr_over_callback(ld3320_t ops, asr_over_callback_t callback);
+void ld3320_addcommand_tolist(ld3320_t ops, char *pass, int num);
+void ld3320_addcommand_fromlist(ld3320_t ops);
 
 #ifdef LD3320_USING_MP3
-void ld3320_mp3_start(ld3320_head_t ops);
-void ld3320_set_mp3_file_path(ld3320_head_t ops, const char * mp3);
+void ld3320_mp3_start(ld3320_t ops);
+void ld3320_set_mp3_file_path(ld3320_t ops, const char * mp3);
 #endif
 
 
-#endif /* MY_PACKAGES_LD3320_H_ */
+#endif /* __LD3320_H__ */

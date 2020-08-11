@@ -16,13 +16,13 @@
 
 static void ld3320_thread(void * parameter)
 {
-    static ld3320_head_t ld3320;
-    ld3320 = ld3320_create("spi2a", LD3320_PIN_NONE, LD3320_RST, LD3320_IRQ, LD3320_MODE_MP3);
-    ld3320_set_mp3_file_path(ld3320, "/test.mp3");
-    ld3320_mp3_start(ld3320);
+    static ld3320_t _ld3320;
+    _ld3320 = ld3320_create("spi2a", LD3320_PIN_NONE, LD3320_RST, LD3320_IRQ, LD3320_MODE_MP3);
+    ld3320_set_mp3_file_path(_ld3320, "/test.mp3");
+    ld3320_mp3_start(_ld3320);
     while (1)
     {
-        ld3320_run(ld3320, LD3320_MODE_MP3);
+        ld3320_run(_ld3320, LD3320_MODE_MP3);
         rt_thread_mdelay(50);
     }
 }

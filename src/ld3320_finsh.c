@@ -10,13 +10,13 @@
 #include "ld3320.h"
 
 #ifdef LD3320_USING_FINSH
-static ld3320_head_t ld3320_head;
+static ld3320_t ld3320_head;
 
-void ld3320_finsh_init(ld3320_head_t ops)
+void ld3320_finsh_init(ld3320_t ops)
 {
     ld3320_head=ops;
 }
-static void ld3320_list_command_fromnode(ld3320_head_t ops)
+static void ld3320_list_command_fromnode(ld3320_t ops)
 {
     ld3320_command_t tmp;
     rt_list_t *node;

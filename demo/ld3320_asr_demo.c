@@ -39,19 +39,19 @@ static void ld3320_a_asr_over_callback(uint8_t num)
 
 static void ld3320_asr_thread(void * parameter)
 {
-    static ld3320_head_t ld3320;
-    ld3320 = ld3320_create("spi2a", LD3320_PIN_NONE, LD3320_RST, LD3320_IRQ, LD3320_MODE_ASR);
-    ld3320_set_asr_over_callback(ld3320, ld3320_a_asr_over_callback);
+    static ld3320_t _ld3320;
+    _ld3320 = ld3320_create("spi2a", LD3320_PIN_NONE, LD3320_RST, LD3320_IRQ, LD3320_MODE_ASR);
+    ld3320_set_asr_over_callback(_ld3320, ld3320_a_asr_over_callback);
 
-    ld3320_addcommand_tolist(ld3320, "kai shi", 1);
-    ld3320_addcommand_tolist(ld3320, "guan bi", 2);
-    ld3320_addcommand_tolist(ld3320, "zan ting", 3);
-    ld3320_addcommand_fromlist(ld3320);
+    ld3320_addcommand_tolist(_ld3320, "kai shi", 1);
+    ld3320_addcommand_tolist(_ld3320, "guan bi", 2);
+    ld3320_addcommand_tolist(_ld3320, "zan ting", 3);
+    ld3320_addcommand_fromlist(_ld3320);
 
-    ld3320_asr_start(ld3320);
+    ld3320_asr_start(_ld3320);
     while (1)
     {
-        ld3320_run(ld3320, LD3320_MODE_ASR);
+        ld3320_run(_ld3320, LD3320_MODE_ASR);
         rt_thread_mdelay(100);
     }
 }

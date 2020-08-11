@@ -27,11 +27,11 @@ void rt_hw_us_delay(rt_uint32_t us);
  * @name:    ld3320_soft_rst
  * @brief:   ld3320 software reset
  * @param:
- *           ops:   ld3320_head_t handle
+ *           ops:   ld3320_t handle
  * @retval:
  *           None
  */
-static void ld3320_soft_rst(ld3320_head_t ops)
+static void ld3320_soft_rst(ld3320_t ops)
 {
     RT_ASSERT(ops);
     ld3320_write_reg(ops->obj.dev, 0x17, 0x35);/* ld3320 software reset */
@@ -40,12 +40,12 @@ static void ld3320_soft_rst(ld3320_head_t ops)
  * @name:    ld3320_init_common
  * @brief:   ld3320 general initialization
  * @param:
- *           ops:   ld3320_head_t handle
+ *           ops:   ld3320_t handle
  *           mode:  run mode
  * @retval:
  *           None
  */
-static void ld3320_init_common(ld3320_head_t ops, uint8_t mode)
+static void ld3320_init_common(ld3320_t ops, uint8_t mode)
 {
     RT_ASSERT(ops);
     ld3320_read_reg(ops->obj.dev, 0x06);/* read fifo status */
@@ -91,11 +91,11 @@ static void ld3320_init_common(ld3320_head_t ops, uint8_t mode)
  * @name:    ld3320_init_asr
  * @brief:   Initialize LD3320 ASR mode
  * @param:
- *           ops:   ld3320_head_t handle
+ *           ops:   ld3320_t handle
  * @retval:
  *           None
  */
-static void ld3320_init_asr(ld3320_head_t ops)
+static void ld3320_init_asr(ld3320_t ops)
 {
     RT_ASSERT(ops);
     ld3320_write_reg(ops->obj.dev, 0xbd, 0x00);/* initialize the ASR controller */
@@ -117,11 +117,11 @@ static void ld3320_init_asr(ld3320_head_t ops)
  * @name:    ld3320_init_mp3
  * @brief:   Initialize LD3320 MP3 mode
  * @param:
- *           ops:   ld3320_head_t handle
+ *           ops:   ld3320_t handle
  * @retval:
  *           None
  */
-static void ld3320_init_mp3(ld3320_head_t ops)
+static void ld3320_init_mp3(ld3320_t ops)
 {
     RT_ASSERT(ops);
     ld3320_write_reg(ops->obj.dev, 0xBD, 0x02);/* initialize the MP3 controller */
@@ -157,12 +157,12 @@ static void ld3320_init_mp3(ld3320_head_t ops)
  * @name:    ld3320_set_mix2spVolume
  * @brief:
  * @param:
- *           ops:   ld3320_head_t handle
+ *           ops:   ld3320_t handle
  *           val:   volume
  * @retval:
  *           None
  */
-static void ld3320_set_mix2spVolume(ld3320_head_t ops, uint8_t val)
+static void ld3320_set_mix2spVolume(ld3320_t ops, uint8_t val)
 {
     val = ((32 - val) & 0x0f) << 2;
     ld3320_write_reg(ops->obj.dev, 0x8E, val | 0xc3);
@@ -175,12 +175,12 @@ static void ld3320_set_mix2spVolume(ld3320_head_t ops, uint8_t val)
  * @name:    ld3320_check_asrbusy_flag_b2
  * @brief:   check whether the value of LD3320 b2 register is equal to 0x21, only when it is equal to 0x21, LD3320 is idle
  * @param:
- *           ops:   ld3320_head_t handle
+ *           ops:   ld3320_t handle
  * @retval:
  *           1：ld3320 idle
  *           0：LD3320 busy
  */
-static uint8_t ld3320_check_asrbusy_flag_b2(ld3320_head_t ops)
+static uint8_t ld3320_check_asrbusy_flag_b2(ld3320_t ops)
 {
     RT_ASSERT(ops);
     uint8_t j;
@@ -203,12 +203,12 @@ static uint8_t ld3320_check_asrbusy_flag_b2(ld3320_head_t ops)
  * @name:    ld3320_set_speechEndpoint
  * @brief:   adjust the end time of the voice endpoint (interval time between words), parameters (0x00~0xC3, unit 10MS)
  * @param:
- *           ops:               ld3320_head_t handle
+ *           ops:               ld3320_t handle
  *           speech_endpoint_:  voice endpoint end time
  * @retval:
  *           None
  */
-static void ld3320_set_speechEndpoint(ld3320_head_t ops, uint8_t speech_endpoint)
+static void ld3320_set_speechEndpoint(ld3320_t ops, uint8_t speech_endpoint)
 {
     RT_ASSERT(ops);
     ld3320_write_reg(ops->obj.dev, 0xb3, speech_endpoint);
@@ -219,12 +219,12 @@ static void ld3320_set_speechEndpoint(ld3320_head_t ops, uint8_t speech_endpoint
  * @name:    ld3320_set_micvol
  * @brief:   ddjust ADC gain, parameters (0x00~0xFF, recommended 10-60)
  * @param:
- *           ops:       ld3320_head_t handle
+ *           ops:       ld3320_t handle
  *           micvol:    ADC gain
  * @retval:
  *           None
  */
-static void ld3320_set_micvol(ld3320_head_t ops, uint8_t micvol)
+static void ld3320_set_micvol(ld3320_t ops, uint8_t micvol)
 {
     RT_ASSERT(ops);
     ld3320_write_reg(ops->obj.dev, 0x35, micvol);
@@ -235,12 +235,12 @@ static void ld3320_set_micvol(ld3320_head_t ops, uint8_t micvol)
  * @name:    ld3320_speechStartTime
  * @brief:   adjust the start time of the voice endpoint, parameters (0x00~0x30, unit 10MS)
  * @param:
- *           ops:                   ld3320_head_t handle
+ *           ops:                   ld3320_t handle
  *           speech_start_time_:    Voice endpoint start time
  * @retval:
  *           None
  */
-static void ld3320_set_speechStartTime(ld3320_head_t ops,uint8_t speech_start_time)
+static void ld3320_set_speechStartTime(ld3320_t ops,uint8_t speech_start_time)
 {
     RT_ASSERT(ops);
     ld3320_write_reg(ops->obj.dev, 0xb4, speech_start_time);
@@ -251,12 +251,12 @@ static void ld3320_set_speechStartTime(ld3320_head_t ops,uint8_t speech_start_ti
  * @name:    ld3320_speechEndTime
  * @brief:   adjust the end time of the voice endpoint (interval time of utterance), parameters (0x00~0xC3, unit 10MS);
  * @param:
- *           ops:               ld3320_head_t handle
+ *           ops:               ld3320_t handle
  *           speech_end_time:   voice end time
  * @retval:
  *           None
  */
-static void ld3320_set_speechEndTime(ld3320_head_t ops, uint8_t speech_end_time)
+static void ld3320_set_speechEndTime(ld3320_t ops, uint8_t speech_end_time)
 {
     RT_ASSERT(ops);
     ld3320_write_reg(ops->obj.dev, 0xb5, speech_end_time);
@@ -267,12 +267,12 @@ static void ld3320_set_speechEndTime(ld3320_head_t ops, uint8_t speech_end_time)
  * @name:    ld3320_voiceMaxLength
  * @brief:   the longest voice segment time, parameter (0x00~0xC3, unit 100MS)
  * @param:
- *           ops:               ld3320_head_t handle
+ *           ops:               ld3320_t handle
  *           speech_end_time:   the longest voice segment time
  * @retval:
  *           None
  */
-static void ld3320_set_voiceMaxLength(ld3320_head_t ops, uint8_t voice_max_length)
+static void ld3320_set_voiceMaxLength(ld3320_t ops, uint8_t voice_max_length)
 {
     RT_ASSERT(ops);
     ld3320_write_reg(ops->obj.dev, 0xb6, voice_max_length);
@@ -283,12 +283,12 @@ static void ld3320_set_voiceMaxLength(ld3320_head_t ops, uint8_t voice_max_lengt
  * @name:    ld3320_noiseTime
  * @brief:   Power-on noise skip, parameter (0x00~0xff, unit 20MS)
  * @param:
- *           ops:               ld3320_head_t handle
+ *           ops:               ld3320_t handle
  *           speech_end_time:   noise time
  * @retval:
  *           None
  */
-static void ld3320_set_noiseTime(ld3320_head_t ops, uint8_t noise_time)
+static void ld3320_set_noiseTime(ld3320_t ops, uint8_t noise_time)
 {
     RT_ASSERT(ops);
     ld3320_write_reg(ops->obj.dev, 0xb7, noise_time);
@@ -299,12 +299,12 @@ static void ld3320_set_noiseTime(ld3320_head_t ops, uint8_t noise_time)
  * @name:    ld3320_asr_start
  * @brief:   start LD3320 ASR
  * @param:
- *           ops:   ld3320_head_t handle
+ *           ops:   ld3320_t handle
  * @retval:
  *           1：start success
  *           0：start failure
  */
-uint8_t ld3320_asr_start(ld3320_head_t ops)
+uint8_t ld3320_asr_start(ld3320_t ops)
 {
     RT_ASSERT(ops);
     ld3320_write_reg(ops->obj.dev, 0x1c, 0x09);/* ADC switch control, Reserved */
@@ -336,13 +336,13 @@ uint8_t ld3320_asr_start(ld3320_head_t ops)
  * @name:    ld3320_addcommand
  * @brief:   add recognition sentences to ld3320
  * @param:
- *           ops:       ld3320_head_t handle
+ *           ops:       ld3320_t handle
  *           *pass：    voice keywords
  *           num:       keyword num
  * @retval:
  *           None
  */
-void ld3320_addcommand(ld3320_head_t ops, char *pass, int num)
+static void ld3320_addcommand(ld3320_t ops, char *pass, int num)
 {
     RT_ASSERT(ops);
     int i;
@@ -369,13 +369,13 @@ void ld3320_addcommand(ld3320_head_t ops, char *pass, int num)
  * @name:    ld3320_addcommand_tonode
  * @brief:   Add recognition sentences to the ld3320 linked list structure
  * @param:
- *           ops:        ld3320_head_t handle
+ *           ops:        ld3320_t handle
  *           *pass：     voice keywords
  *           micvol:     keyword num
  * @retval:
  *           None
  */
-void ld3320_addcommand_tolist(ld3320_head_t ops, char *pass, int num)
+void ld3320_addcommand_tolist(ld3320_t ops, char *pass, int num)
 {
     ld3320_command_t node;
     node = (ld3320_command_t) rt_malloc(sizeof(struct ld3320_command));
@@ -396,11 +396,11 @@ void ld3320_addcommand_tolist(ld3320_head_t ops, char *pass, int num)
  * @name:    ld3320_addcommand_fromnode
  * @brief:   add the recognition sentence stored in the ld3320 linked list structure into the LD3320
  * @param:
- *           ops:   ld3320_head_t handle
+ *           ops:   ld3320_t handle
  * @retval:
  *           None
  */
-void ld3320_addcommand_fromlist(ld3320_head_t ops)
+void ld3320_addcommand_fromlist(ld3320_t ops)
 {
     ld3320_command_t tmp;
     rt_list_t  *node;
@@ -417,12 +417,12 @@ void ld3320_addcommand_fromlist(ld3320_head_t ops)
  * @name:    ld3320_init_chip
  * @brief:   ld3320 initialization chip
  * @param:
- *           ops:   ld3320_head_t handle
+ *           ops:   ld3320_t handle
  *           mode:  mode
  * @retval:
  *           None
  */
-static void ld3320_init_chip(ld3320_head_t ops, uint8_t mode)
+static void ld3320_init_chip(ld3320_t ops, uint8_t mode)
 {
     RT_ASSERT(ops);
 
@@ -452,11 +452,11 @@ static void ld3320_init_chip(ld3320_head_t ops, uint8_t mode)
  * @name:    ld3320_hw_rst
  * @brief:   ld3320 hardware reset
  * @param:
- *           ops:  ld3320_head_t handle
+ *           ops:  ld3320_t handle
  * @retval:
  *           None
  */
-void ld3320_hw_rst(ld3320_head_t ops)
+void ld3320_hw_rst(ld3320_t ops)
 {
     RT_ASSERT(ops);
     if (ops->obj.port.rst_pin != LD3320_PIN_NONE)
@@ -496,13 +496,13 @@ static void ld3320_irq_down(void *asr)
  * @retval:
  *           ld3320 object
  */
-void ld3320_finsh_init(ld3320_head_t ops);
-ld3320_head_t ld3320_create(char *spi_dev_name, int wr, int rst, int irq, uint8_t mode)
+void ld3320_finsh_init(ld3320_t ops);
+ld3320_t ld3320_create(char *spi_dev_name, int wr, int rst, int irq, uint8_t mode)
 {
     RT_ASSERT(spi_dev_name);
-    ld3320_head_t ops;
+    ld3320_t ops;
     /* initialization of linked list header */
-    ops = (ld3320_head_t) rt_malloc(sizeof(struct ld3320_head));
+    ops = (ld3320_t) rt_malloc(sizeof(struct ld3320));
     if (ops == RT_NULL)
     {
 #ifdef LD3320_USING_LOG
@@ -586,11 +586,11 @@ ld3320_head_t ld3320_create(char *spi_dev_name, int wr, int rst, int irq, uint8_
  * @name:    ld3320_asr_run
  * @brief:   LD3320 ASR mode operation function
  * @param:
- *           ops:   ld3320_head_t handle
+ *           ops:   ld3320_t handle
  * @retval:
  *           None
  */
-static void ld3320_asr_run(ld3320_head_t ops)
+static void ld3320_asr_run(ld3320_t ops)
 {
     RT_ASSERT(ops);
     uint8_t Asr_Count = 0;
@@ -636,12 +636,12 @@ static void ld3320_asr_run(ld3320_head_t ops)
  * @name:    ld3320_set_asr_over_callback
  * @brief:   set the callback function after LD3320 speech recognition is successful
  * @param:
- *           ops:           ld3320_head_t handle
+ *           ops:           ld3320_t handle
  *           callback:      Callback
  * @retval:
  *           None
  */
-void ld3320_set_asr_over_callback(ld3320_head_t ops, asr_over_callback_t callback)
+void ld3320_set_asr_over_callback(ld3320_t ops, asr_over_callback_t callback)
 {
     RT_ASSERT(ops);
     if (ops->obj.dev != RT_NULL)
@@ -656,16 +656,17 @@ void ld3320_set_asr_over_callback(ld3320_head_t ops, asr_over_callback_t callbac
     }
 }
 
+
 #ifdef LD3320_USING_MP3
 /**
  * @name:    ld3320_mp3_start
  * @brief:   start LD3320 MP3
  * @param:
- *           ops:   ld3320_head_t handle
+ *           ops:   ld3320_t handle
  * @retval:
  *           None
  */
-void ld3320_mp3_start(ld3320_head_t ops)
+void ld3320_mp3_start(ld3320_t ops)
 {
     RT_ASSERT(ops);
     int fd;
@@ -722,11 +723,11 @@ void ld3320_mp3_start(ld3320_head_t ops)
  * @name:    ld3320_mp3_run
  * @brief:   LD3320 MP3 mode operation function
  * @param:
- *           ops:   ld3320_head_t handle
+ *           ops:   ld3320_t handle
  * @retval:
  *           None
  */
-static void ld3320_mp3_run(ld3320_head_t ops)
+static void ld3320_mp3_run(ld3320_t ops)
 {
     RT_ASSERT(ops);
     int fd;
@@ -770,13 +771,13 @@ static void ld3320_mp3_run(ld3320_head_t ops)
  * @name:    ld3320_set_mp3_file_path
  * @brief    LD3320 set mp3 file path function
  * @param:
- *           ops:   ld3320_head_t handle
+ *           ops:   ld3320_t handle
  *           mp3:   file path
  * @retval:
  *           None
  * @note   This function must be called cyclically, otherwise LD3320 will not work.
  * */
-void ld3320_set_mp3_file_path(ld3320_head_t ops, const char * mp3)
+void ld3320_set_mp3_file_path(ld3320_t ops, const char * mp3)
 {
     rt_strncpy(ops->obj.mp3_path, mp3, rt_strlen(mp3));
     ops->obj.mp3_size = 0;
@@ -789,13 +790,13 @@ void ld3320_set_mp3_file_path(ld3320_head_t ops, const char * mp3)
  * @name:    ld3320_set_asr_over_callback
  * @brief    LD3320 heartbeat function
  * @param:
- *           ops:   ld3320_head_t handle
+ *           ops:   ld3320_t handle
  *           mode:  mode
  * @retval:
  *           None
  * @note   This function must be called cyclically, otherwise LD3320 will not work.
  * */
-void ld3320_run(ld3320_head_t ops, uint8_t mode)
+void ld3320_run(ld3320_t ops, uint8_t mode)
 {
     RT_ASSERT(ops);
     if (mode == LD3320_MODE_ASR)
