@@ -7,9 +7,6 @@ cwd = GetCurrentDir()
 src = []
 inc = [cwd + '/inc']
 
-# add ld3320 include
-inc = inc + [cwd]
-
 # add ld3360 source code
 src = src + ['src/ld3320.c']
 src = src + ['src/ld3320_base.c']

@@ -8,16 +8,21 @@
  * 2020-08-11     xqyjlj       the first version
  */
 #include <rtthread.h>
+
+#ifdef PKG_LD3320_DEMO_ROLE_MP3
+
+#if (PKG_LD3320_DEMO_IRQ_PIN < 0)
+#error Please specify a valid pin
+#endif
+
 #include "drv_spi.h"
 #include "ld3320.h"
 
-#define LD3320_RST GET_PIN(H, 11)
-#define LD3320_IRQ GET_PIN(H, 12)
 
 static void ld3320_thread(void * parameter)
 {
     static ld3320_t _ld3320;
-    _ld3320 = ld3320_create("spi2a", LD3320_PIN_NONE, LD3320_RST, LD3320_IRQ, LD3320_MODE_MP3);
+    _ld3320 = ld3320_create(PKG_LD3320_DEMO_SPI_DEV_NAME, PKG_LD3320_DEMO_WR_PIN, PKG_LD3320_DEMO_RST_PIN, PKG_LD3320_DEMO_IRQ_PIN, LD3320_MODE_MP3);
     ld3320_set_mp3_file_path(_ld3320, "/test.mp3");
     ld3320_mp3_start(_ld3320);
     while (1)
@@ -39,3 +44,5 @@ static int create_ld3320_thread(void)
 }
 
 INIT_APP_EXPORT(create_ld3320_thread);
+
+#endif
