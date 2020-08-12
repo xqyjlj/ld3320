@@ -15,14 +15,14 @@
 #define LD3320_PIN_NONE                 -1
 
 #define LD3320_MODE_ASR                 0x08
-#ifdef LD3320_USING_MP3
+#ifdef PKG_USING_LD3320_MP3
 #define LD3320_MODE_MP3                 0x80
 #endif
 #define LD3320_CLK_IN                   22/* LD3320 chip input frequency */
 
 #define LD3320_PLL_11                   (uint8_t)((LD3320_CLK_IN/2.0)-1)
 
-#ifdef LD3320_USING_MP3
+#ifdef PKG_USING_LD3320_MP3
 #define LD3320_PLL_MP3_19               0x0f
 #define LD3320_PLL_MP3_1B               0x18
 #define LD3320_PLL_MP3_1D               (uint8_t)(((90.0*((LD3320_PLL_11)+1))/(LD3320_CLK_IN))-1)
@@ -58,7 +58,7 @@ struct ld3320_obj
     struct ld3320_port port;
     struct rt_spi_device *dev;
     void (*asr_over_callback_t)(uint8_t num); /*callback */
-#ifdef LD3320_USING_MP3
+#ifdef PKG_USING_LD3320_MP3
     char mp3_path[30];
     uint32_t mp3_size;
     uint32_t mp3_pos;
@@ -91,7 +91,7 @@ void ld3320_set_asr_over_callback(ld3320_t ops, asr_over_callback_t callback);
 void ld3320_addcommand_tolist(ld3320_t ops, char *pass, int num);
 void ld3320_addcommand_fromlist(ld3320_t ops);
 
-#ifdef LD3320_USING_MP3
+#ifdef PKG_USING_LD3320_MP3
 void ld3320_mp3_start(ld3320_t ops);
 void ld3320_set_mp3_file_path(ld3320_t ops, const char * mp3);
 #endif

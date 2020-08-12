@@ -9,7 +9,7 @@
  */
 #include "ld3320_base.h"
 
-#ifdef LD3320_USING_RECV_REPORT
+#ifdef PKG_USING_LD3320_RECV_REPORT
 #define DBG_TAG "ld_base"
 #define DBG_LVL DBG_LOG
 #include <rtdbg.h>
@@ -197,7 +197,7 @@ uint8_t ld3320_read_reg(struct rt_spi_device *device, uint8_t addr)
     tmp_addr = addr;
     static uint8_t data;
     ld3320_spi_recv(device, &tmp_read, &tmp_addr, &data);
-#ifdef LD3320_ENABLING_RECV_REPORT
+#ifdef PKG_USING_LD3320_RECV_REPORT
     LOG_D("read: 0x%02X->0x%02X", tmp_addr, data);
 #endif
     return data;

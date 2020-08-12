@@ -9,7 +9,7 @@
  */
 #include "ld3320.h"
 
-#ifdef LD3320_USING_FINSH
+#ifdef PKG_USING_LD3320_FINSH
 static ld3320_t ld3320_head;
 
 void ld3320_finsh_init(ld3320_t ops)

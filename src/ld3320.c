@@ -15,7 +15,7 @@
 #include <rtdbg.h>
 
 
-#ifdef LD3320_USING_MP3
+#ifdef PKG_USING_LD3320_MP3
 #include <dfs_posix.h>
 #endif
 
@@ -70,7 +70,7 @@ static void ld3320_init_common(ld3320_t ops, uint8_t mode)
         ld3320_write_reg(ops->obj.dev, 0x1d, LD3320_PLL_ASR_1D);/* set clock frequency 4 */
 
     }
-#ifdef LD3320_USING_MP3
+#ifdef PKG_USING_LD3320_MP3
     else if (mode == LD3320_MODE_MP3)
     {
         ld3320_write_reg(ops->obj.dev, 0x1e, 0x00);/* ADC control initialization */
@@ -112,7 +112,7 @@ static void ld3320_init_asr(ld3320_t ops)
     rt_hw_us_delay(1);
 }
 
-#ifdef LD3320_USING_MP3
+#ifdef PKG_USING_LD3320_MP3
 /**
  * @name:    ld3320_init_mp3
  * @brief:   Initialize LD3320 MP3 mode
@@ -152,7 +152,7 @@ static void ld3320_init_mp3(ld3320_t ops)
 #endif
 
 
-#ifdef LD3320_USING_MP3
+#ifdef PKG_USING_LD3320_MP3
 /**
  * @name:    ld3320_set_mix2spVolume
  * @brief:
@@ -436,7 +436,7 @@ static void ld3320_init_chip(ld3320_t ops, uint8_t mode)
         ld3320_set_voiceMaxLength(ops, LD3320_VOICE_MAX_LENGTH);
         ld3320_set_noiseTime(ops, LD3320_NOISE_TIME);
     }
-#ifdef LD3320_USING_MP3
+#ifdef PKG_USING_LD3320_MP3
     else if (mode == LD3320_MODE_MP3)
     {
         ld3320_init_mp3(ops);
@@ -563,7 +563,7 @@ ld3320_t ld3320_create(char *spi_dev_name, int wr, int rst, int irq, uint8_t mod
 
     ld3320_hw_rst(ops);
     ld3320_init_chip(ops, mode);
-#ifdef LD3320_USING_FINSH
+#ifdef PKG_USING_LD3320_FINSH
     ld3320_finsh_init(ops);
 #endif
     return ops;
@@ -643,7 +643,7 @@ void ld3320_set_asr_over_callback(ld3320_t ops, asr_over_callback_t callback)
 }
 
 
-#ifdef LD3320_USING_MP3
+#ifdef PKG_USING_LD3320_MP3
 /**
  * @name:    ld3320_mp3_start
  * @brief:   start LD3320 MP3
@@ -702,7 +702,7 @@ void ld3320_mp3_start(ld3320_t ops)
 #endif
 
 
-#ifdef LD3320_USING_MP3
+#ifdef PKG_USING_LD3320_MP3
 /**
  * @name:    ld3320_mp3_run
  * @brief:   LD3320 MP3 mode operation function
@@ -750,7 +750,7 @@ static void ld3320_mp3_run(ld3320_t ops)
 #endif
 
 
-#ifdef LD3320_USING_MP3
+#ifdef PKG_USING_LD3320_MP3
 /**
  * @name:    ld3320_set_mp3_file_path
  * @brief    LD3320 set mp3 file path function
@@ -787,7 +787,7 @@ void ld3320_run(ld3320_t ops, uint8_t mode)
     {
         ld3320_asr_run(ops);
     }
-#ifdef LD3320_USING_MP3
+#ifdef PKG_USING_LD3320_MP3
     else if (mode == LD3320_MODE_MP3)
     {
         ld3320_mp3_run(ops);
