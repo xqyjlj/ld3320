@@ -9,11 +9,11 @@
  */
 #include "ld3320.h"
 
-#ifdef LD3320_USING_LOG
+
 #define DBG_TAG "ld3320"
 #define DBG_LVL DBG_LOG
 #include <rtdbg.h>
-#endif
+
 
 #ifdef LD3320_USING_MP3
 #include <dfs_posix.h>
@@ -381,9 +381,7 @@ void ld3320_addcommand_tolist(ld3320_t ops, char *pass, int num)
     node = (ld3320_command_t) rt_malloc(sizeof(struct ld3320_command));
     if (node == RT_NULL)
     {
-#ifdef LD3320_USING_LOG
         LOG_E("fail malloc node");
-#endif
         return;
     }
     rt_strncpy(node->name, pass, rt_strlen(pass) + 1);
@@ -505,27 +503,21 @@ ld3320_t ld3320_create(char *spi_dev_name, int wr, int rst, int irq, uint8_t mod
     ops = (ld3320_t) rt_malloc(sizeof(struct ld3320));
     if (ops == RT_NULL)
     {
-#ifdef LD3320_USING_LOG
         LOG_E("ld3320 head create fail");
-#endif
         return RT_NULL;
     }
     /* initialize the linked list structure */
     rt_list_init(&ops->node);
     if (!rt_list_isempty(&ops->node))
     {
-#ifdef LD3320_USING_LOG
         LOG_E("fail init ld3320 head");
-#endif
         return RT_NULL;
     }
     /* find SPI device */
     ops->obj.dev = (struct rt_spi_device *) rt_device_find(spi_dev_name);
     if (ops->obj.dev == RT_NULL)
     {
-#ifdef LD3320_USING_LOG
         LOG_E("Can't find dev for ld3320 device on '%s' ", spi_dev_name);
-#endif
         return RT_NULL;
     }
     /* reconfigure SPI mode */
@@ -559,17 +551,13 @@ ld3320_t ld3320_create(char *spi_dev_name, int wr, int rst, int irq, uint8_t mod
         ld3320_sem = rt_sem_create("ld3320", 0, RT_IPC_FLAG_FIFO);/* binary semaphore */
         if (ld3320_sem == RT_NULL)
         {
-#ifdef LD3320_USING_LOG
             LOG_E("ld3320 sem create fail");
-#endif
             return RT_NULL;
         }
     }
     else
     {
-#ifdef LD3320_USING_LOG
         LOG_E("please input correct pin");
-#endif
         return RT_NULL;
     }
 
@@ -650,9 +638,7 @@ void ld3320_set_asr_over_callback(ld3320_t ops, asr_over_callback_t callback)
     }
     else
     {
-#ifdef LD3320_USING_LOG
-        LOG_W("fail set ld3320 asr over callback");
-#endif
+        LOG_E("fail set ld3320 asr over callback");
     }
 }
 
@@ -683,9 +669,7 @@ void ld3320_mp3_start(ld3320_t ops)
     }
     else
     {
-#ifdef LD3320_USING_LOG
         LOG_E("fail get mp3 file status");
-#endif
     }
 
     fd = open(ops->obj.mp3_path, O_RDONLY);/* open mp3 file */
